@@ -1,7 +1,8 @@
-package com.example.makeanumber
+package com.example.makeanumber.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.makeanumber.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

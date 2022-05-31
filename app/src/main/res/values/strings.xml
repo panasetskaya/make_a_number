@@ -5,7 +5,7 @@
     <string name="game_rules">Подставьте недостающее число внизу, чтобы получилась сумма, указанная в верхней фигуре.</string>
     <string name="button_understand">Понятно</string>
     <string name="welcome_logo">Welcome logo</string>
-    <string name="choose_level_title">Выберите уровень:</string>
+    <string name="choose_level_title">Уровень:</string>
     <string name="easy_level">Легкий</string>
     <string name="normal_level">Средний</string>
     <string name="hard_level">Тяжелый</string>

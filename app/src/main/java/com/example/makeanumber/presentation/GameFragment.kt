@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.makeanumber.R
 import com.example.makeanumber.databinding.FragmentGameBinding
+import com.example.makeanumber.domain.entity.GameResult
+import com.example.makeanumber.domain.entity.GameSettings
 import com.example.makeanumber.domain.entity.Level
 import java.lang.RuntimeException
 
@@ -22,6 +24,7 @@ class GameFragment : Fragment() {
         super.onCreate(savedInstanceState)
         parseArgs()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,6 +36,12 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.tvSum.setOnClickListener {
+            launchGameFinishedFragment(
+                GameResult
+                    (true, 12, 12, GameSettings(30, 10, 60, 28))
+            )
+        }
 
     }
 
@@ -42,17 +51,27 @@ class GameFragment : Fragment() {
     }
 
     private fun parseArgs() {
-        level = requireArguments().getSerializable(KEY_LEVEL) as Level
+        requireArguments().getParcelable<Level>(KEY_LEVEL)?.let {
+            level = it
+        }
+    }
+
+    private fun launchGameFinishedFragment(gameResult: GameResult) {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, GameFinishedFragment.newInstance(gameResult))
+            .addToBackStack(null)
+            .commit()
     }
 
     companion object {
 
         private const val KEY_LEVEL = "level"
+        const val BACKSTACK_NAME = "GameFragment"
 
         fun newInstance(level: Level): GameFragment {
             return GameFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(KEY_LEVEL, level)
+                    putParcelable(KEY_LEVEL, level)
                 }
             }
         }

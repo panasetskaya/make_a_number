@@ -31,29 +31,24 @@ class ChooseLevelFragment : Fragment() {
 
     private fun setButtonListeners() {
         binding.buttonLevelEasy.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_container, GameFragment.newInstance(Level.EASY))
-                .addToBackStack(null)
-                .commit()
+            launchGameFragment(Level.EASY)
         }
         binding.buttonLevelHard.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_container, GameFragment.newInstance(Level.HARD))
-                .addToBackStack(null)
-                .commit()
+            launchGameFragment(Level.HARD)
         }
         binding.buttonLevelNormal.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_container, GameFragment.newInstance(Level.MEDIUM))
-                .addToBackStack(null)
-                .commit()
+            launchGameFragment(Level.MEDIUM)
         }
         binding.buttonLevelTest.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_container, GameFragment.newInstance(Level.TEST))
-                .addToBackStack(null)
-                .commit()
+            launchGameFragment(Level.TEST)
         }
+    }
+
+    private fun launchGameFragment(level: Level) {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, GameFragment.newInstance(level))
+            .addToBackStack(GameFragment.BACKSTACK_NAME)
+            .commit()
     }
 
     override fun onDestroyView() {
@@ -62,6 +57,9 @@ class ChooseLevelFragment : Fragment() {
     }
 
     companion object {
+
+        const val BACKSTACK_NAME = "choose level"
+
         fun newInstance(): ChooseLevelFragment {
             return ChooseLevelFragment()
         }

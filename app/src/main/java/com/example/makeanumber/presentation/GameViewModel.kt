@@ -63,6 +63,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         setSettings(thisLevel)
         startTimer()
         getQuestion()
+        updateProgress()
     }
 
     fun chooseAnswer(number: Int) {
@@ -71,13 +72,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         getQuestion()
     }
 
-    fun setSettings(thisLevel: Level) {
+    private fun setSettings(thisLevel: Level) {
         this.level = thisLevel
         settings = getGameSettingsUseCase.invoke(thisLevel)
         _minPercent.value = settings.minPercentOfRightAnswers
     }
 
-    fun startTimer() {
+    private fun startTimer() {
         timer = object : CountDownTimer(
             settings.gameTimeSeconds * MILLIS_IN_SECONDS,
             MILLIS_IN_SECONDS
@@ -92,7 +93,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getQuestion() {
+    private fun getQuestion() {
         _questionLiveData.value = generateQuestionUseCase.invoke(settings.maxSumValue)
     }
 
@@ -117,7 +118,11 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun calculateProgressPercent(): Int {
-        return ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
+        if (countOfQuestions==0) {
+            return 0
+        } else {
+            return ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
+        }
     }
 
     private fun formatTime(p0: Long): String {

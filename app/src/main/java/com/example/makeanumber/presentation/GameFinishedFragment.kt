@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.makeanumber.R
 import com.example.makeanumber.databinding.FragmentGameFinishedBinding
 import com.example.makeanumber.domain.entity.GameResult
@@ -16,15 +18,13 @@ import java.lang.RuntimeException
 
 class GameFinishedFragment : Fragment() {
 
-    private lateinit var gameResult: GameResult
+    private val args by navArgs<GameFinishedFragmentArgs>()
+    private val gameResult by lazy { args.result }
     private var _binding: FragmentGameFinishedBinding? = null
     private val binding: FragmentGameFinishedBinding
         get() = _binding ?: throw RuntimeException("FragmentGameFinishedBinding == null")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parseArgs()
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,13 +36,6 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    retry()
-                }
-            })
         binding.buttonRetry.setOnClickListener {
             retry()
         }
@@ -84,10 +77,7 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun retry() {
-        requireActivity().supportFragmentManager.popBackStack(
-            GameFragment.BACKSTACK_NAME,
-            FragmentManager.POP_BACK_STACK_INCLUSIVE
-        )
+        findNavController().popBackStack()
     }
 
     private fun chooseColor(isWin: Boolean): Int {
@@ -97,23 +87,5 @@ class GameFinishedFragment : Fragment() {
             android.R.color.holo_red_light
         }
         return ContextCompat.getColor(requireContext(), colorResId)
-    }
-
-    private fun parseArgs() {
-        requireArguments().getParcelable<GameResult>(KEY_RESULT)?.let {
-            gameResult = it
-        }
-    }
-
-    companion object {
-        const val KEY_RESULT = "result"
-
-        fun newInstance(gameResult: GameResult): GameFinishedFragment {
-            return GameFinishedFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_RESULT, gameResult)
-                }
-            }
-        }
     }
 }

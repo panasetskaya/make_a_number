@@ -6,6 +6,7 @@ import android.os.CountDownTimer
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.makeanumber.R
 import com.example.makeanumber.domain.entity.GameResult
 import com.example.makeanumber.domain.entity.GameSettings
@@ -14,7 +15,10 @@ import com.example.makeanumber.domain.entity.Question
 import com.example.makeanumber.domain.useCases.GenerateQuestionUseCase
 import com.example.makeanumber.domain.useCases.GetGameSettingsUseCase
 
-class GameViewModel(application: Application) : AndroidViewModel(application) {
+class GameViewModel(
+    application: Application,
+    private val level: Level
+) : ViewModel(){
 
     private var timer: CountDownTimer? = null
     private val context = application
@@ -22,7 +26,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     private val generateQuestionUseCase = GenerateQuestionUseCase(repo)
     private val getGameSettingsUseCase = GetGameSettingsUseCase(repo)
     private lateinit var settings: GameSettings
-    private lateinit var level: Level
     private var countOfRightAnswers = 0
     private var countOfQuestions = 0
 
@@ -58,9 +61,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     val gameResultLiveData: LiveData<GameResult>
         get() = _gameResultLiveData
 
+    init {
+        startGame()
+    }
 
-    fun startGame(thisLevel: Level) {
-        setSettings(thisLevel)
+
+    private fun startGame() {
+        setSettings()
         startTimer()
         getQuestion()
         updateProgress()
@@ -72,9 +79,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         getQuestion()
     }
 
-    private fun setSettings(thisLevel: Level) {
-        this.level = thisLevel
-        settings = getGameSettingsUseCase.invoke(thisLevel)
+    private fun setSettings() {
+        settings = getGameSettingsUseCase.invoke(level)
         _minPercent.value = settings.minPercentOfRightAnswers
     }
 

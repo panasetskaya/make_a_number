@@ -1,19 +1,15 @@
 package com.example.makeanumber.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.makeanumber.R
 import com.example.makeanumber.databinding.FragmentGameFinishedBinding
-import com.example.makeanumber.domain.entity.GameResult
-import java.lang.RuntimeException
 
 
 class GameFinishedFragment : Fragment() {
@@ -23,7 +19,6 @@ class GameFinishedFragment : Fragment() {
     private var _binding: FragmentGameFinishedBinding? = null
     private val binding: FragmentGameFinishedBinding
         get() = _binding ?: throw RuntimeException("FragmentGameFinishedBinding == null")
-
 
 
     override fun onCreateView(
@@ -66,7 +61,8 @@ class GameFinishedFragment : Fragment() {
         )
         binding.tvScoreAnswers.text =
             String.format((getString(R.string.score_answers)), gameResult.countOfRightAnswers)
-        val percentage = (gameResult.countOfRightAnswers/gameResult.countofQuestionsAnswered.toDouble() *100).toInt()
+        val percentage =
+            (gameResult.countOfRightAnswers / gameResult.countofQuestionsAnswered.toDouble() * 100).toInt()
         binding.tvScorePercentage.text =
             String.format(getString(R.string.score_percentage), percentage)
     }

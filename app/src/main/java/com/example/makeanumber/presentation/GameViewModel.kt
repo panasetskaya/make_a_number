@@ -91,6 +91,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                 finishGame()
             }
         }
+        timer?.start()
     }
 
     private fun getQuestion() {

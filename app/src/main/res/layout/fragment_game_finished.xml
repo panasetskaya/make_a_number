@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="gameResult"
+            type="com.example.makeanumber.domain.entity.GameResult" />
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -20,6 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/happy_robot"
+        app:emojiResult="@{gameResult.win}"
         />
 
     <TextView
@@ -27,7 +36,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/game_result_win"
+        tools:text="@string/game_result_win"
+        app:resultText="@{gameResult.win}"
         android:gravity="center"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -43,9 +53,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/required_score"
+        app:requiredAnswers="@{gameResult.gameSettings.minCountOfRightAnswers}"
         android:textSize="18sp"
         android:gravity="center"
+        tools:text="@string/required_score"
         app:layout_constraintBottom_toTopOf="@id/tv_score_answers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +68,8 @@
         android:id="@+id/tv_score_answers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/score_answers"
+        tools:text="@string/score_answers"
+        app:scoreAnswers="@{gameResult.countOfRightAnswers}"
         android:textSize="18sp"
         android:gravity="center"
         android:textStyle="bold"
@@ -72,7 +84,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/required_percentage"
+        tools:text="@string/required_percentage"
+        app:requiredPercent="@{gameResult.gameSettings.minPercentOfRightAnswers}"
         android:textSize="18sp"
         android:gravity="center"
         app:layout_constraintBottom_toTopOf="@id/tv_score_percentage"
@@ -87,7 +100,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/score_percentage"
+        tools:text="@string/score_percentage"
+        app:scorePercent="@{gameResult}"
         android:textSize="18sp"
         android:gravity="center"
         android:textStyle="bold"
@@ -110,3 +124,4 @@
         tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

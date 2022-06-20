@@ -1,7 +1,9 @@
 package com.example.makeanumber.presentation
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -68,4 +70,36 @@ private fun chooseColor(context: Context, isWin: Boolean): Int {
         android.R.color.holo_red_light
     }
     return ContextCompat.getColor(context, colorResId)
+}
+
+@BindingAdapter("progressBarColorLiveData")
+fun bindProgressBarColorLiveData(progressBar: ProgressBar, enough: Boolean) {
+    val color = chooseColor(progressBar.context, enough)
+    progressBar.progressTintList = ColorStateList.valueOf(color)
+}
+
+@BindingAdapter("progressBarPercentRightAnswersLiveData")
+fun bindProgressBarPercentRightAnswersLiveData(progressBar: ProgressBar, rightAnswersPercent: Int) {
+    progressBar.setProgress(rightAnswersPercent, true)
+}
+
+@BindingAdapter("enoughAnswersLiveData")
+fun bindEnoughAnswersLiveData(textView: TextView, enough:Boolean) {
+    textView.setTextColor(chooseColor(textView.context, enough))
+}
+
+@BindingAdapter("numberAsText")
+fun bindNumberAsText(textView: TextView, number: Int) {
+    textView.text = number.toString()
+}
+
+interface OnOptionClickListener {
+    fun onOptionClick(option: Int)
+}
+
+@BindingAdapter("onOptionClickListener")
+fun bindOnOptionClickListener(textView: TextView, clickListener: OnOptionClickListener) {
+    textView.setOnClickListener {
+        clickListener.onOptionClick(textView.text.toString().toInt())
+    }
 }
